@@ -1,4 +1,6 @@
-const {tracksModel} = require('../models')
+const { matchedData } = require('express-validator');
+const { tracksModel } = require('../models');
+const { handleHttpError } = require('../utils/handleError');
 
 /**
  * obtener lista base de datos
@@ -8,9 +10,15 @@ const {tracksModel} = require('../models')
 
 
 const getItems =  async (req,res) => {
+    try {
+        const data = await tracksModel.find({});
+        res.send({data});
+      } catch (e) {
+        handleHttpError(res, 'ERROR_GET_ITEMS');
+      }
 
-    const data = await tracksModel.find({});
-    res.send({data})
+
+
 
 };
 
@@ -20,7 +28,17 @@ const getItems =  async (req,res) => {
  * @param {*} res 
  */
 
-const getItem = (req,res) => {
+const getItem = async (req,res) => {
+
+  try {
+    req = matchedData(req);
+    const { id } = req;
+
+    const data = await tracksModel.findById(id); //findById
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, 'ERROR_GET_ITEM');
+  }
 
 };
 
@@ -31,10 +49,16 @@ const getItem = (req,res) => {
  */
 
 const createItem = async (req,res) => {
-    const {body} = req
-    console.log(body);
-    const data = await tracksModel.create(body)
-    res.send({data})
+
+    try {
+        const body = matchedData(req);
+        const data = await tracksModel.create(body);
+        res.send({data});
+      } catch (e) {
+        handleHttpError(res, 'ERROR_CREATE_ITEMS');
+      }
+
+
 
 };
 
@@ -44,7 +68,16 @@ const createItem = async (req,res) => {
  * @param {*} res 
  */
 
-const updateItem = (req,res) => {
+const updateItem = async (req,res) => {
+
+    try {
+    const { id, ...body } = matchedData(req);
+    const data = await tracksModel.findOneAndUpdate(id, body);
+
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, 'ERROR_UPDATE_ITEMS');
+  }
 
 };
 
@@ -54,7 +87,17 @@ const updateItem = (req,res) => {
  * @param {*} res 
  */
 
-const deleteItem = (req,res) => {
+const deleteItem = async (req,res) => {   
+  try {
+    req = matchedData(req);
+    const { id } = req;
+
+    const data = await tracksModel.deleteOne({ _id: id }); //deleteOne (borra el dato)
+    res.send({ data });
+  } catch (error) {
+    console.log(error);
+    handleHttpError(res, 'ERROR_DELETE_ITEM');
+  }
 
 };
 
