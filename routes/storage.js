@@ -1,8 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const uploadMiddleware = require("../utils/handleStorage");
-const { createItem } = require("../controllers/storage");
+const { validatorGetItem } = require('../validators/storage');
+const {getItems, getItem, createItem, updateItem, deleteItem} = require('../controllers/storage');
 
-router.post("/",uploadMiddleware.single("myfile"),createItem);
+router.get('/', getItems);
+
+//getItem
+router.get('/:id', validatorGetItem, getItem);
+
+//createItem
+router.post('/', uploadMiddleware.single('myfile'), createItem); //single | multi
+
+//deleteItem
+router.delete('/:id', validatorGetItem, deleteItem);
 
 module.exports = router; 
