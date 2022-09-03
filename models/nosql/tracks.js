@@ -49,5 +49,5 @@ const TracksScheme = new mongoose.Schema(
 );
 
 
-TracksSchema.plugin(mongooseDelete, { overrideMethods: 'all' });
+TracksScheme.plugin(mongooseDelete,{overrideMethods: "all"});
 module.exports = mongoose.model("tracks",TracksScheme)

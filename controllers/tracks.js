@@ -1,6 +1,6 @@
-const { matchedData } = require('express-validator');
-const { tracksModel } = require('../models');
+const {tracksModel} = require('../models');
 const { handleHttpError } = require('../utils/handleError');
+const {matchedData} = require("express-validator");
 
 /**
  * obtener lista base de datos
@@ -87,15 +87,14 @@ const updateItem = async (req,res) => {
  * @param {*} res 
  */
 
-const deleteItem = async (req,res) => {   
-  try {
-    req = matchedData(req);
-    const { id } = req;
+ const deleteItem =  async (req,res) => {
 
-    const data = await tracksModel.delete({ _id: id }); //deleteOne (borra el dato)
-    res.send({ data });
+  try {
+      req = matchedData(req);
+      const {id} = req;
+      const data = await tracksModel.delete({_id:id});
+      res.send({data})
   } catch (error) {
-    console.log(error);
     handleHttpError(res, 'ERROR_DELETE_ITEM');
   }
 
