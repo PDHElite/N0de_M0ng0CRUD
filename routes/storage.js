@@ -10,7 +10,7 @@ router.get('/', getItems);
 router.get('/:id', validatorGetItem, getItem);
 
 //createItem
-router.post('/',uploadMiddleware.single("myfile"),createItem);
+router.post("/",uploadMiddleware.single("myfile"),createItem);
 
 //deleteItem
 router.delete('/:id', validatorGetItem, deleteItem);
